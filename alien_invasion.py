@@ -25,10 +25,12 @@ class AlienInvasion:
         while True:
     
             self._check_events()
+            self.ship.update()
             self._update_screen()
             self.clock.tick(60)
             
             #Make the most recently drawn screen visible.
+            #Notice how all of the little changes and updates to the screen have to happen before we run display.flip()?
             pygame.display.flip()
 
 
@@ -36,6 +38,27 @@ class AlienInvasion:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+
+            #Player depresses and holds down left or right arrows
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    #Move the ship to the right
+                    self.ship.moving_right = True
+
+                elif event.key == pygame.K_LEFT:
+                    #Move the ship to the right
+                    self.ship.moving_left = True
+
+
+            #Player lets of of left or right arrows            
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    #Move the ship to the right
+                    self.ship.moving_right = False
+
+                elif event.key == pygame.K_LEFT:
+                    #Move the ship to the right
+                    self.ship.moving_left = False
 
 
     def _update_screen(self):

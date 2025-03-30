@@ -34,6 +34,7 @@ class Ship:
         """Update the ship's position based on the movement flag"""
 
         #Update the ship's x value, not the rect.
+        #Remember that the screen_rect is set in settings.py via screen_width. It has a value of 1200.
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.x += self.settings.ship_speed
 

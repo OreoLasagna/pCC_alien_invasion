@@ -3,6 +3,7 @@ import pygame # type: ignore #Can just ignore the squiggles this works
 
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
 
 class AlienInvasion:
     """Overall class to manage game assets and behavior"""
@@ -15,9 +16,16 @@ class AlienInvasion:
         self.settings = Settings()
 
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+
+        #Full Screen Settings. Comment out the prior self.screen = line to implement it
+        #self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+        #self.settings.screen_width = self.screen.get_rect().width
+        #self.settings.screen_height = self.screen.get_rect().height
+
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
+        self.bullets = pygame.sprite.Group()
 
 
     def run_game(self):
@@ -26,6 +34,8 @@ class AlienInvasion:
     
             self._check_events()
             self.ship.update()
+            self.bullets.update() #When you call update on a Group from pygame the Group calls update on every instance stored in it
+                                #Essentially calling bullet.update() on everything in it
             self._update_screen()
             self.clock.tick(60)
             
@@ -62,6 +72,10 @@ class AlienInvasion:
             #Quits the game if q is hit
             sys.exit()
 
+        elif event.key == pygame.K_SPACE:
+            #Fires a bullet
+            self._fire_bullet()
+
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
@@ -72,10 +86,18 @@ class AlienInvasion:
             #Move the ship to the right
             self.ship.moving_left = False
 
+    
+    def _fire_bullet(self):
+        """Create a new bullet and add it to the bullets group"""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
+
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen"""
         self.screen.fill(self.settings.bg_color)
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
         self.ship.blitme()
 
 

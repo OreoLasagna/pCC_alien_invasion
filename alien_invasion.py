@@ -4,6 +4,7 @@ import pygame # type: ignore #Can just ignore the squiggles this works
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 class AlienInvasion:
     """Overall class to manage game assets and behavior"""
@@ -26,6 +27,9 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+
+        self._create_fleet()
 
 
     def run_game(self):
@@ -38,9 +42,7 @@ class AlienInvasion:
             self._update_screen()
             self.clock.tick(60)
             
-            #Make the most recently drawn screen visible.
-            #Notice how all of the little changes and updates to the screen have to happen before we run display.flip()?
-            pygame.display.flip()
+
 
 
     def _check_events(self):
@@ -105,14 +107,26 @@ class AlienInvasion:
                 self.bullets.remove(bullet)
             #print(len(self.bullets))
 
+    def _create_fleet(self):
+        """Create the fleet of aliens"""
+        #Make an alien
+        alien = Alien(self)
+        self.aliens.add(alien)
+
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen"""
         self.screen.fill(self.settings.bg_color)
+        
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
-        self.ship.blitme()
+        
+        self.aliens.draw(self.screen)
 
+        self.ship.blitme()
+        #Make the most recently drawn screen visible.
+        #Notice how all of the little changes and updates to the screen have to happen before we run display.flip()?
+        pygame.display.flip()
 
 if __name__ == '__main__':
     #Make a game instance and run the game.

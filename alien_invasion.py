@@ -4,6 +4,7 @@ import pygame # type: ignore #Can just ignore the squiggles this works
 
 from settings import Settings
 from game_stats import GameStats
+from button import Button
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
@@ -37,7 +38,10 @@ class AlienInvasion:
         self._create_fleet()
 
         #Start Alien Invasion in an active status
-        self.game_active = True
+        self.game_active = False
+
+        #Make the Play button
+        self.play_button = Button(self, "Play")
 
 
     def run_game(self):
@@ -231,6 +235,9 @@ class AlienInvasion:
         self.aliens.draw(self.screen)
 
         self.ship.blitme()
+
+        if not self.game_active:
+            self.play_button.draw_button()
         #Make the most recently drawn screen visible.
         #Notice how all of the little changes and updates to the screen have to happen before we run display.flip()?
         pygame.display.flip()

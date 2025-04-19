@@ -62,8 +62,6 @@ class AlienInvasion:
             self.clock.tick(60)
             
 
-
-
     def _check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -87,12 +85,12 @@ class AlienInvasion:
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.game_active:
             #Reset the game settings
-            self.settings.initialize_dynamic_settings()
             self._start_game()
 
 
     def _start_game(self):
         #Reset the game statistics.
+            self.settings.initialize_dynamic_settings()
             self.stats.reset_stats()
             self.sb.prep_score()
             self.game_active = True
@@ -175,6 +173,7 @@ class AlienInvasion:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
+            self.sb.check_high_score()
 
         if not self.aliens:
             #Destroy existing bullets and create new fleet

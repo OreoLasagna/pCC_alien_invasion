@@ -1,3 +1,5 @@
+from pathlib import Path
+
 class GameStats:
     """Track statistics for Alien Invasion"""
 
@@ -7,7 +9,8 @@ class GameStats:
         self.reset_stats()
 
         #High score should never be reset
-        self.high_score = 0
+        path = Path('high_score.txt')
+        self.high_score = int(path.read_text())
 
     def reset_stats(self):
         """Initialize statistics that can change during the game"""

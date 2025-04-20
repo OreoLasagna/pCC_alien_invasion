@@ -1,6 +1,7 @@
 import pygame.font
 from pygame.sprite import Group
 from ship import Ship
+from pathlib import Path
 
 class Scoreboard:
     """A class to report scoring information"""
@@ -60,6 +61,8 @@ class Scoreboard:
         """Check to see if there's a new high score"""
         if self.stats.score > self.stats.high_score:
             self.stats.high_score = self.stats.score
+            path = Path('high_score.txt')
+            path.write_text(str(self.stats.high_score))
             self.prep_high_score()
 
     

@@ -35,8 +35,14 @@ class AlienInvasion:
         self.sb = Scoreboard(self)
 
         self.ship = Ship(self)
+
         self.bullets = pygame.sprite.Group()
+        self.shoot_sound = pygame.mixer.Sound('audio/shoot.wav')
+        self.shoot_sound.set_volume(0.02)
+
         self.aliens = pygame.sprite.Group()
+        self.alien_explode = pygame.mixer.Sound('audio/explosion.wav')
+        self.alien_explode.set_volume(0.009)
 
         self._create_fleet()
 
@@ -144,6 +150,7 @@ class AlienInvasion:
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
+            self.shoot_sound.play()
 
 
     def _update_bullets(self):
@@ -172,6 +179,7 @@ class AlienInvasion:
         if collisions:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
+                self.alien_explode.play()
             self.sb.prep_score()
             self.sb.check_high_score()
 

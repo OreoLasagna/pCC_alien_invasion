@@ -92,9 +92,7 @@ class AlienInvasion:
         #Reset the game statistics.
             self.settings.initialize_dynamic_settings()
             self.stats.reset_stats()
-            self.sb.prep_score()
-            self.sb.prep_level()
-            self.sb.prep_ships()
+            self.sb.prep_images()
             self.game_active = True
 
             #Get rid of any remaining bullets and aliens
@@ -178,16 +176,20 @@ class AlienInvasion:
             self.sb.check_high_score()
 
         if not self.aliens:
-            #Destroy existing bullets and create new fleet
-            self.bullets.empty()
-            self._create_fleet()
-            self.settings.increase_speed()
-
-            #Increase level
-            self.stats.level += 1
-            self.sb.prep_level()
+            self._start_new_level()
 
 
+    def _start_new_level(self):
+        #Destroy existing bullets and create new fleet
+        self.bullets.empty()
+        self._create_fleet()
+        self.settings.increase_speed()
+
+        #Increase level
+        self.stats.level += 1
+        self.sb.prep_level()
+        
+            
     def _create_fleet(self):
         """Create the fleet of aliens"""
         #Create an alien and keep adding aliens until there's no room left
